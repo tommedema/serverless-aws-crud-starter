@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/tommedema/serverless-aws-crud-starter/issues"
   },
-  "homepage": "https://github.com/tommedema/serverless-aws-crud-starter#readme"
+  "homepage": "https://github.com/tommedema/serverless-aws-crud-starter#readme",
+  "devDependencies": {
+    "serverless": "^1.24.1"
+  }
 }

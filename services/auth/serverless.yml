@@ -118,7 +118,7 @@ resources:
                         - 'arn:aws:execute-api:'
                         - Ref: 'AWS::Region'
                         - ':*:'
-                        - Ref: ApiGatewayRestApi
+                        - '*' # Ref: ApiGatewayRestApi
                         - '/*'
                 
                 # allow users to upload attachments to s3
