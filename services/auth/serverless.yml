@@ -1,0 +1,184 @@
+frameworkVersion: '=1.24.1'
+
+service: ${{file(./package.json):name}}
+    
+provider:
+  name: aws
+  stage: ${{opt:stage, 'dev'}}
+  region: ${{opt:region, 'eu-west-2'}}
+  
+  # use ${{}} to access serverless variables
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}"
+      
+  stackTags:
+    SERVICE: ${{self:service}}
+    STAGE: ${{self:provider.stage}}
+    REGION: ${{self:provider.region}}
+    VERSION: ${{file(./package.json):version}}
+          
+resources:
+   
+  Resources:
+    
+    # the cognito user pool used to store users
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+          UnusedAccountValidityDays: 7
+        AliasAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: false
+            RequireNumbers: false
+            RequireSymbols: false
+            RequireUppercase: false
+        AutoVerifiedAttributes:
+          - email
+        Schema:
+          - Name: email
+            AttributeDataType: String
+            Mutable: false
+            Required: true
+            
+    # the user pool client for the user pool to login with
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        GenerateSecret: false # should be false for web clients
+        UserPoolId:
+          Ref: CognitoUserPool
+          
+    # the federated identity for our user pool to auth with
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        AllowUnauthenticatedIdentities: false
+        CognitoIdentityProviders:
+          - ClientId:
+              Ref: CognitoUserPoolClient
+            ProviderName:
+              Fn::GetAtt: [CognitoUserPool, ProviderName]
+              
+    # IAM roles used for (un)authenticated users
+    CognitoIdentityPoolRoles:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId:
+          Ref: CognitoIdentityPool
+        Roles:
+          authenticated:
+            Fn::GetAtt: [CognitoAuthRole, Arn]
+          unauthenticated:
+            Fn::GetAtt: [CognitoUnauthRole, Arn]
+            
+    # the IAM role used for authenticated users
+    CognitoAuthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: 'Allow'
+              Principal:
+                Federated: 'cognito-identity.amazonaws.com'
+              Action:
+                - 'sts:AssumeRoleWithWebIdentity'
+              Condition:
+                StringEquals:
+                  'cognito-identity.amazonaws.com:aud':
+                    Ref: CognitoIdentityPool
+                'ForAnyValue:StringLike':
+                  'cognito-identity.amazonaws.com:amr': authenticated
+        Policies:
+          - PolicyName: 'CognitoAuthorizedPolicy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: 'Allow'
+                  Action:
+                    - 'mobileanalytics:PutEvents'
+                    - 'cognito-sync:*'
+                    - 'cognito-identity:*'
+                  Resource: '*'
+                
+                # allow users to invoke the API gateway
+                # FIXME: refer to API service's API gateway
+                - Effect: 'Allow'
+                  Action:
+                    - 'execute-api:Invoke'
+                  Resource:
+                    - Fn::Join:
+                      - ''
+                      -
+                        - 'arn:aws:execute-api:'
+                        - Ref: 'AWS::Region'
+                        - ':*:'
+                        - Ref: ApiGatewayRestApi
+                        - '/*'
+                
+                # allow users to upload attachments to s3
+                # provided that s3 path is prefixed with their identity
+                # FIXME: enable attachments bucket
+                # - Effect: 'Allow'
+                #   Action:
+                #     - 's3:*'
+                #   Resource:
+                #     - Fn::Join:
+                #       - ''
+                #       -
+                #         - Fn::GetAtt: [AttachmentsBucket, Arn]
+                #         - '/${cognito-identity.amazonaws.com:sub}*'
+    
+    # the IAM role used for unauthenticated users
+    CognitoUnauthRole:
+      Type: AWS::IAM::Role
+      Properties:
+        Path: /
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: 'Allow'
+              Principal:
+                Federated: 'cognito-identity.amazonaws.com'
+              Action:
+                - 'sts:AssumeRoleWithWebIdentity'
+              Condition:
+                StringEquals:
+                  'cognito-identity.amazonaws.com:aud':
+                    Ref: CognitoIdentityPool
+                'ForAnyValue:StringLike':
+                  'cognito-identity.amazonaws.com:amr': unauthenticated
+        Policies:
+          - PolicyName: 'CognitoUnauthorizedPolicy'
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: 'Allow'
+                  Action:
+                    - 'mobileanalytics:PutEvents'
+                    - 'cognito-sync:*'
+                    - 'cognito-identity:*'
+                  Resource: '*'
+              
+  Outputs:
+          
+    CognitoUserPoolId:
+      Description: id of the cognito user pool
+      Value:
+        Ref: CognitoUserPool
+        
+    CognitoUserPoolClientId:
+      Description: id of the cognito user pool client
+      Value:
+        Ref: CognitoUserPoolClient
+        
+    CognitoIdentityPoolId:
+      Description: id of the cognito identity pool
+      Value:
+        Ref: CognitoIdentityPool
+        

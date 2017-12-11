@@ -1,0 +1,20 @@
+{
+  "name": "serverless-aws-crud-starter",
+  "version": "0.0.1",
+  "description": "starter kit enabling single-command spawning of serverless backed applications with all infrastructure being version controlled",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tommedema/serverless-aws-crud-starter.git"
+  },
+  "keywords": [
+    "serverless",
+    "aws",
+    "starter"
+  ],
+  "author": "Tom Medema",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tommedema/serverless-aws-crud-starter/issues"
+  },
+  "homepage": "https://github.com/tommedema/serverless-aws-crud-starter#readme"
+}
