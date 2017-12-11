@@ -1,0 +1,4 @@
+{
+  "plugins": ["transform-runtime", "source-map-support"],
+  "presets": ["node6", "stage-3"]
+}
