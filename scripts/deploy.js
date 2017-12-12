@@ -1,11 +1,33 @@
-// determine if we should run this with babel-node
-// to support node 6.10.3 and make local debugging easier
-// or if we should force a newer version of node for development (> 8.9.3)
+const readPkg = require('read-pkg')
+const listDirectories = require('list-directories')
+const execa = require('execa')
 
-// retrieve project name and default aws region from config or package.json
+if (!process.env.STAGE) {
+  throw new Error('STAGE environment variable is not set')
+}
 
-// in each service, sorted alphabetically, run `npm run deploy` with env vars
+async function main() {
+  const pkg = await readPkg()
+  const services = await listDirectories(`${__dirname}/../services`)
+  
+  for (let servicePath of services) {
+    const spkg = await readPkg(servicePath)
+    console.log(`deploying ${spkg.name} version ${spkg.version}`)
+    await deployService(servicePath, pkg.name, process.env.STAGE, pkg.region)
+    console.log(`deployed ${spkg.name} version ${spkg.version}`)
+  }
+}
 
-// consider setting engine requirements in mother package.json
-// then have each child service inherit from this
-// same for sub service name (project-subservice format)
+async function deployService(servicePath, project, stage, region) {
+  await execa('npm', ['run', 'deploy'], {
+    cwd: servicePath,
+    env: {
+      PROJECT: project,
+      REGION: region,
+      STAGE: stage
+    },
+    stdout: process.stdout
+  })
+}
+
+main()
