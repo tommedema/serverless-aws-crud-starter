@@ -2,21 +2,18 @@
   "name": "serverless-aws-crud-starter-api",
   "version": "0.0.1",
   "scripts": {
-    "sls": "export AWS_PROFILE=${PROJECT}-${STAGE} && ../../node_modules/serverless/bin/serverless --verbose --region $REGION --stage $STAGE",
-    "deploy": "npm run sls -- deploy --aws-s3-accelerate",
-    "package": "npm run sls -- package",
-    "remove": "npm run sls -- remove"
+    "deploy": "node ../../scripts/deploy-service"
   },
   "devDependencies": {
     "aws-sdk": "^2.167.0",
-    "serverless-webpack": "^4.1.0",
-    "webpack": "^3.10.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-source-map-support": "^1.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-node6": "^11.0.0",
     "babel-preset-stage-3": "^6.24.1",
+    "serverless-webpack": "^4.1.0",
+    "webpack": "^3.10.0",
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
@@ -25,7 +22,7 @@
     "cfn-response": "^1.0.1",
     "source-map-support": "^0.5.0"
   },
-  "engines" : {
+  "engines": {
     "node": ">=9.2.1",
     "npm": ">=5.6.0"
   }

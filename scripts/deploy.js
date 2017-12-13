@@ -1,33 +1,36 @@
-const readPkg = require('read-pkg')
 const listDirectories = require('list-directories')
 const execa = require('execa')
-
-if (!process.env.STAGE) {
-  throw new Error('STAGE environment variable is not set')
-}
+const env = require('require-env')
+const path = require('path')
 
 async function main() {
-  const pkg = await readPkg()
-  const services = await listDirectories(`${__dirname}/../services`)
+  const services = await listDirectories(path.resolve(__dirname, '../services'))
+  const stage = env.require('STAGE')
   
   for (let servicePath of services) {
-    const spkg = await readPkg(servicePath)
-    console.log(`deploying ${spkg.name} version ${spkg.version}`)
-    await deployService(servicePath, pkg.name, process.env.STAGE, pkg.region)
-    console.log(`deployed ${spkg.name} version ${spkg.version}`)
+    await deployService(servicePath, stage)
   }
+  
+  console.log(`deployed services:
+    ${services.split('\n')}`)
 }
 
-async function deployService(servicePath, project, stage, region) {
+async function deployService(servicePath, stage) {
   await execa('npm', ['run', 'deploy'], {
     cwd: servicePath,
     env: {
-      PROJECT: project,
-      REGION: region,
       STAGE: stage
     },
     stdout: process.stdout
   })
 }
 
-main()
+(async () => {
+  try {
+    main()
+  }
+  catch (err) {
+    console.error(err)
+    process.exit(err.code)
+  }
+})()

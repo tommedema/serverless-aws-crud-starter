@@ -1,7 +1,9 @@
 {
   "name": "serverless-aws-crud-starter",
   "version": "0.0.1",
-  "region": "eu-west-2",
+  "slsConfig": {
+    "region": "eu-west-2"
+  },
   "description": "starter kit enabling single-command spawning of serverless applications with all infrastructure being version controlled",
   "scripts": {
     "deploy": "node scripts/deploy"
@@ -25,6 +27,7 @@
     "execa": "^0.8.0",
     "list-directories": "^1.0.0",
     "read-pkg": "^3.0.0",
+    "require-env": "^0.2.1",
     "serverless": "^1.24.1"
   },
   "engines": {

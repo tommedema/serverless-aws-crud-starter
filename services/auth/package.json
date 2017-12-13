@@ -2,10 +2,7 @@
   "name": "serverless-aws-crud-starter-auth",
   "version": "0.0.1",
   "scripts": {
-    "sls": "export AWS_PROFILE=${PROJECT}-${STAGE} && ../../node_modules/serverless/bin/serverless --verbose --region $REGION --stage $STAGE",
-    "deploy": "npm run sls -- deploy --aws-s3-accelerate",
-    "package": "npm run sls -- package",
-    "remove": "npm run sls -- remove"
+    "deploy": "node ../../scripts/deploy-service"
   },
   "engines" : {
     "node": ">=9.2.1",
