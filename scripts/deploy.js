@@ -4,15 +4,14 @@ const env = require('require-env')
 const path = require('path')
 
 async function main() {
-  const services = await listDirectories(path.resolve(__dirname, '../services'))
+  const services = Array.from(await listDirectories(path.resolve(__dirname, '../services')))
   const stage = env.require('STAGE')
   
   for (let servicePath of services) {
     await deployService(servicePath, stage)
   }
   
-  console.log(`deployed services:
-    ${services.split('\n')}`)
+  console.log(`deployed services:\n${services.map((p) => path.basename(p)).join('\n')}`)
 }
 
 async function deployService(servicePath, stage) {
