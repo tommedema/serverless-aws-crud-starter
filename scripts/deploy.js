@@ -4,7 +4,7 @@ const env = require('require-env')
 const path = require('path')
 
 async function main() {
-  const services = Array.from(await listDirectories(path.resolve(__dirname, '../services')))
+  const services = Array.from(await listDirectories(path.resolve(__dirname, '../services'))).sort()
   const stage = env.require('STAGE')
   
   for (let servicePath of services) {

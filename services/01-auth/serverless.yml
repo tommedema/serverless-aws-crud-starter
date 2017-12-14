@@ -15,6 +15,9 @@ provider:
     STAGE: ${{self:provider.stage}}
     REGION: ${{self:provider.region}}
     VERSION: ${{file(./package.json):version}}
+
+custom:
+  projectName: ${{file(../../package.json):name}}
           
 resources:
    
@@ -107,23 +110,14 @@ resources:
                   Resource: '*'
                 
                 # allow users to invoke the API gateway
-                # FIXME: refer to API service's API gateway
                 - Effect: 'Allow'
                   Action:
                     - 'execute-api:Invoke'
                   Resource:
-                    - Fn::Join:
-                      - ''
-                      -
-                        - 'arn:aws:execute-api:'
-                        - Ref: 'AWS::Region'
-                        - ':*:'
-                        - '*' # Ref: ApiGatewayRestApi
-                        - '/*'
+                    Fn::Join: ['', [${{cf:${{self:custom.projectName}}-api-${{self:provider.stage}}.RestApiArn}}, '/*']]
                 
                 # allow users to upload attachments to s3
                 # provided that s3 path is prefixed with their identity
-                # FIXME: enable attachments bucket
                 # - Effect: 'Allow'
                 #   Action:
                 #     - 's3:*'
