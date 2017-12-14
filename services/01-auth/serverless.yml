@@ -114,7 +114,11 @@ resources:
                   Action:
                     - 'execute-api:Invoke'
                   Resource:
-                    Fn::Join: ['', [${{cf:${{self:custom.projectName}}-api-${{self:provider.stage}}.RestApiArn}}, '/*']]
+                    Fn::Join:
+                      - ''
+                      -
+                        - ${{cf:${{self:custom.projectName}}-api-${{self:provider.stage}}.RestApiArn}}
+                        - '/*'
                 
                 # allow users to upload attachments to s3
                 # provided that s3 path is prefixed with their identity
