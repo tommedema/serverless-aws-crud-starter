@@ -1,0 +1,11 @@
+{
+  "name": "serverless-aws-crud-starter-web",
+  "version": "0.0.1",
+  "scripts": {
+    "deploy": "node ../../scripts/deploy-service"
+  },
+  "engines" : {
+    "node": ">=9.2.1",
+    "npm": ">=5.6.0"
+  }
+}

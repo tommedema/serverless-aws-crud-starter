@@ -1,0 +1,21 @@
+{
+  "name": "serverless-aws-crud-starter-web-app",
+  "version": "0.0.1",
+  "dependencies": {
+    "amazon-cognito-identity-js": "^1.21.0",
+    "aws-sdk": "^2.135.0",
+    "crypto-js": "^3.1.9-1",
+    "react": "^16.0.0",
+    "react-bootstrap": "^0.31.3",
+    "react-dom": "^16.0.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.14",
+    "uuid": "^3.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

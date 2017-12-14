@@ -1,0 +1,115 @@
+frameworkVersion: '=1.24.1'
+
+service: ${{file(./package.json):name}}
+
+# compile the web app after cloudformation stack data is known
+plugins:
+  - deploy-react-app
+    
+provider:
+  name: aws
+  stage: ${{opt:stage, 'dev'}}
+  region: ${{opt:region, 'eu-west-2'}}
+  
+  # use ${{}} to access serverless variables
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}"
+      
+  stackTags:
+    SERVICE: ${{self:service}}
+    STAGE: ${{self:provider.stage}}
+    REGION: ${{self:provider.region}}
+    VERSION: ${{file(./package.json):version}}
+
+custom:
+  projectName: ${{file(../../package.json):name}}
+          
+resources:
+   
+  Resources:
+    
+    # the s3 bucket used to host the web app
+    WebBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: index.html # single page app has its own routing
+        AccelerateConfiguration:
+          AccelerationStatus: Enabled
+        
+    # enable public read for web bucket
+    WebBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: WebBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: s3:GetObject
+              Resource:
+                Fn::Join: ['', [Fn::GetAtt: [WebBucket, Arn], '/*']]
+                
+    # cloudfront with https redirect
+    WebCloudfrontDist:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Comment: cloudfront distribution pointing to web s3 bucket
+          # FIXME: this should be set once domains service is active
+          # Aliases:
+          #   - Fn::If:
+          #     - ShouldSetupDomain
+          #     - ${{self:custom.domains.${{self:provider.stage}}.name, ''}}
+          #     - Ref: 'AWS::NoValue'
+          Origins:
+          - DomainName:
+              Fn::Join: ['.', [Ref: WebBucket, 's3-website', Ref: 'AWS::Region', 'amazonaws.com']]
+            Id: S3Origin
+            CustomOriginConfig:
+              HTTPPort: '80'
+              HTTPSPort: '443'
+              # origin protocol policy must be http only for s3, see also
+              # http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesOriginProtocolPolicy
+              OriginProtocolPolicy: http-only
+          Enabled: true
+          HttpVersion: 'http2'
+          DefaultRootObject: index.html
+          DefaultCacheBehavior:
+            AllowedMethods:
+            - GET
+            - HEAD
+            Compress: true
+            TargetOriginId: S3Origin
+            ForwardedValues:
+              QueryString: true
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          PriceClass: PriceClass_All
+          # FIXME: this should be set once SSL domain is active
+          # ViewerCertificate:
+          #   Fn::If:
+          #     - ShouldConsumeCertificate
+          #     - 
+          #       AcmCertificateArn:
+          #         Fn::GetAtt: [CertificateResource, acmArn]
+          #       SslSupportMethod: sni-only
+          #     - CloudFrontDefaultCertificate: true
+              
+  Outputs:
+    
+    WebBucketName:
+      Description: name of the s3 bucket used to host the web app
+      Value:
+        Ref: WebBucket
+          
+    WebCloudfrontDistId:
+      Description: id of the cloudfront distribution
+      Value:
+        Ref: WebCloudfrontDist
+    
+        
