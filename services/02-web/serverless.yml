@@ -90,15 +90,18 @@ resources:
           DefaultRootObject: index.html
           DefaultCacheBehavior:
             AllowedMethods:
-            - GET
-            - HEAD
+              - GET
+              - HEAD
+            CachedMethods:
+              - GET
+              - HEAD
             Compress: true
             TargetOriginId: S3Origin
             ForwardedValues:
               QueryString: true
               Cookies:
                 Forward: none
-            ViewerProtocolPolicy: redirect-to-https
+            ViewerProtocolPolicy: allow-all # FIXME: if ssl is enabled: redirect-to-https
           PriceClass: PriceClass_All
           # FIXME: this should be set once SSL domain is active
           # ViewerCertificate:
