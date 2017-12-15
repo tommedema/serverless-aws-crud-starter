@@ -1,0 +1,90 @@
+frameworkVersion: '=1.24.1'
+
+service: ${{file(./package.json):name}}
+
+plugins:
+  # transpile functions' ES7 to ES5 for provider runtime compatibility
+  - serverless-webpack
+  
+  # determine whether this stack's SSL certificate is valid
+  # to prevent resources from consuming while validation is in progress
+  - substitute-certificate-valid
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  memorySize: 512
+  stage: ${{opt:stage, 'dev'}}
+  region: ${{opt:region, 'eu-west-2'}}
+  
+  # use ${{}} to access serverless variables
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}"
+      
+  stackTags:
+    SERVICE: ${{self:service}}
+    STAGE: ${{self:provider.stage}}
+    REGION: ${{self:provider.region}}
+    VERSION: ${{file(./package.json):version}}
+    
+  # allow custom resource to manage certificates
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - acm:*
+      Resource:
+        - '*'
+
+custom:
+  projectName: ${{file(../../package.json):name}}
+  slsConfig: ${{file(../../package.json):slsConfig}}
+  
+functions:
+  
+  # special function backing custom resource to generate SSL certificates
+  requestCertificate:
+    handler: functions/request-certificate.handler
+    timeout: 300
+          
+resources:
+  
+  Conditions:
+    
+    # true when a domain should be setup (route53 hosted zone etc.)
+    ShouldSetupDomain:
+      Fn::Not:
+        - Fn::Equals:
+          - ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, 'none'}}
+          - 'none'
+    
+    # true when a SSL certificate should be requested for a domain
+    ShouldRequestCertificate:
+      Fn::And:
+        - Condition: ShouldSetupDomain
+        - Fn::Equals:
+            - ${{self:custom.slsConfig.domains.${{self:provider.stage}}.requestCertificate, 'false'}}
+            - true
+            
+    # true when requested SSL certificate can be consumed (is valid)
+    # this is automatically determined and substituted during build
+    ShouldConsumeCertificate:
+      Fn::Equals: ['%SCRIPT_SUBSTITUTE_CERTIFICATE_IS_VALID%', 'true']
+   
+  Resources:
+    
+    CertificateResource:
+      Condition: ShouldRequestCertificate
+      Description: custom resource that requests SSL certificates
+      Type: Custom::CertificateResource
+      Properties:
+        RootDomain: ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, 'none'}}
+        ServiceToken:
+          Fn::GetAtt: [RequestCertificateLambdaFunction, Arn]
+              
+  Outputs:
+          
+    CertificateArn:
+      Condition: ShouldRequestCertificate
+      Description: arn of the acm certificate passed to cloudfront
+      Value:
+        Fn::GetAtt: [CertificateResource, acmArn]
+        
