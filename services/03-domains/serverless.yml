@@ -1,6 +1,10 @@
 frameworkVersion: '=1.24.1'
 
 service: ${{file(./package.json):name}}
+
+# print a warning if the given domain's nameservers are not yet set
+plugins:
+  - warn-nameservers
     
 provider:
   name: aws

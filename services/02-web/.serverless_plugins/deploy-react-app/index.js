@@ -1,6 +1,6 @@
 const execa = require('execa')
-const getOutputFactory = require('./lib/get-cf-output')
-const getServiceOutputFactory = require('./lib/get-service-output')
+const getOutputFactory = require('../../../../lib/get-cf-output')
+const getServiceOutputFactory = require('../../../../lib/get-service-output')
 const readPkg = require('read-pkg')
 const path = require('path')
 const rootPkg = readPkg.sync(path.resolve(process.cwd(), '../..'))
