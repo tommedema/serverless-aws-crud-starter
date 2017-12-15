@@ -33,9 +33,7 @@ class DeployReactApp {
     const cognitoUserPoolId = await this.getServiceOutput('auth', 'CognitoUserPoolId')
     const cognitoUserPoolClientId = await this.getServiceOutput('auth', 'CognitoUserPoolClientId')
     const cognitoIdentityPoolId = await this.getServiceOutput('auth', 'CognitoIdentityPoolId')
-    
-    // TODO: make these dynamic
-    const apiRoot = 'https://jbm30uov7i.execute-api.eu-west-2.amazonaws.com/dev/'
+    const apiRoot = await this.getServiceOutput('api', 'ServiceEndpoint')
     const attachmentsBucketName = undefined
     
     this.log(`gathered cloudformation outputs:
