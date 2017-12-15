@@ -38,6 +38,9 @@ custom:
   projectName: ${{file(../../package.json):name}}
   slsConfig: ${{file(../../package.json):slsConfig}}
   
+  # allows for node modules to be separately included into artifact zip
+  webpackIncludeModules: true
+  
 functions:
   
   # special function backing custom resource to generate SSL certificates

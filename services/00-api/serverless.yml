@@ -11,7 +11,7 @@ custom:
   projectName: ${{file(../../package.json):name}}
   slsConfig: ${{file(../../package.json):slsConfig}}
   
-  # allows for the exclusion of external modules to webpack
+  # allows for node modules to be separately included into artifact zip
   webpackIncludeModules: true
     
 provider:
