@@ -44,3 +44,4 @@ Relevant resources
   - web app code changed
   - cloudformation references injected into web app changed
 - investigate when cloudfront is not caching (`x-cache:Miss from cloudfront`)
+- move `deploy-react-app` plugin outside of this repo and publish to NPM
