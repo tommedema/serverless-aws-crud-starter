@@ -34,6 +34,14 @@ resources:
         - Fn::Equals:
           - ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, 'none'}}
           - 'none'
+          
+    # true when a ssl certificate is being requested
+    ShouldRequestCertificate:
+      Fn::And:
+        - Condition: ShouldSetupDomain
+        - Fn::Equals:
+          - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.ShouldRequestCertificate}}
+          - 'true'
    
   Resources:
     
@@ -64,8 +72,35 @@ resources:
           AliasTarget:
             DNSName: ${{cf:${{self:custom.projectName}}-web-${{self:provider.stage}}.WebCloudfrontDomainName}}
             HostedZoneId: Z2FDTNDATAQYW2
+            
+    # additional route53 record sets for DNS certificate validation
+    # note that the HostedZoneId is fixed for record sets, as described at
+    # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-route53-aliastarget.html
+    WebHostedZoneCertificateRecordSetGroup:
+      Type: AWS::Route53::RecordSetGroup
+      Condition: ShouldRequestCertificate
+      Properties:
+        HostedZoneId:
+          Ref: WebHostedZone
+        RecordSets:
+        - Type: CNAME
+          Name: ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.DNSRootRecordName}}
+          ResourceRecords:
+            - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.DNSRootRecordValue}}
+          TTL: '900'
+        - Type: CNAME
+          Name: ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.DNSWWWRecordName}}
+          ResourceRecords:
+            - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.DNSWWWRecordValue}}
+          TTL: '900'
               
   Outputs:
+    
+    WebHostedZoneId:
+      Condition: ShouldSetupDomain
+      Description: id of the hosted zone
+      Value:
+        Ref: WebHostedZone
           
     WebHostedZoneNameServers:
       Condition: ShouldSetupDomain

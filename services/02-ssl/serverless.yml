@@ -91,3 +91,33 @@ resources:
       Value:
         Fn::GetAtt: [CertificateResource, acmArn]
         
+    ShouldRequestCertificate:
+      Value:
+        Fn::If:
+          - ShouldRequestCertificate
+          - 'true'
+          - 'false'
+        
+    ShouldConsumeCertificate:
+      Value:
+        Fn::If:
+          - ShouldConsumeCertificate
+          - 'true'
+          - 'false'
+          
+    DNSRootRecordName:
+      Value:
+        Fn::GetAtt: [CertificateResource, rootRecordName]
+        
+    DNSRootRecordValue:
+      Value:
+        Fn::GetAtt: [CertificateResource, rootRecordValue]
+        
+    DNSWWWRecordName:
+      Value:
+        Fn::GetAtt: [CertificateResource, wwwRecordName]
+        
+    DNSWWWRecordValue:
+      Value:
+        Fn::GetAtt: [CertificateResource, wwwRecordValue]
+        

@@ -2,8 +2,11 @@
 
 ## ToDo
 
-- include ssl certificate in web cloudfront and domains service redirect dist
-- change web's and domains' cloudfront distributions' ViewerProtocolPolicy to redirect-to-https if ssl is enabled
+- ~~include CNAME records for dns validation~~
+- ~~resolve circular dependency to include ssl certificate in web cloudfront and domains service redirect dist~~
+  - ~~web depends on ssl's certificate~~
+  - ~~ssl depends on domain's hosted zone, which depends on web's cloudfront distribution~~
+- ~~change web's and domains' cloudfront distributions' ViewerProtocolPolicy to redirect-to-https if ssl is enabled~~
 - properly provide physical ID from lambda to prevent unexpected Delete requests to the "old" service
   - change to https://www.npmjs.com/package/cfn-responder
   - delete created certificates on actual stack deletion (perhaps use tags to identify?)
@@ -19,3 +22,4 @@
 - don't package aws-sdk once [lambda version](http://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) is >= 2.156; and then enable individual packaging
 - after writing unit tests, refactor request-certificate.js async.forever to use [do/while with async/await](https://github.com/caolan/async/issues/1503#issuecomment-350576515)
 - move `substitute-certificate-valid` plugin outside of this repo and publish to NPM
+- figure out a way to prevent [circular dependencies](https://github.com/serverless/serverless/pull/3575) such that the route53 recordsetgroup specific for SSL validation CNAME records can be put into the ssl domain instead of the domains domain

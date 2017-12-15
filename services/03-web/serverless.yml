@@ -35,6 +35,13 @@ resources:
         - Fn::Equals:
           - ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, 'none'}}
           - 'none'
+          
+    ShouldConsumeCertificate:
+      Fn::And:
+        - Condition: ShouldSetupDomain
+        - Fn::Equals:
+          - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.ShouldConsumeCertificate}}
+          - 'true'
    
   Resources:
     
@@ -101,17 +108,19 @@ resources:
               QueryString: true
               Cookies:
                 Forward: none
-            ViewerProtocolPolicy: allow-all # FIXME: if ssl is enabled: redirect-to-https
+            ViewerProtocolPolicy:
+              Fn::If:
+                - ShouldConsumeCertificate
+                - redirect-to-https
+                - allow-all
           PriceClass: PriceClass_All
-          # FIXME: this should be set once SSL domain is active
-          # ViewerCertificate:
-          #   Fn::If:
-          #     - ShouldConsumeCertificate
-          #     - 
-          #       AcmCertificateArn:
-          #         Fn::GetAtt: [CertificateResource, acmArn]
-          #       SslSupportMethod: sni-only
-          #     - CloudFrontDefaultCertificate: true
+          ViewerCertificate:
+            Fn::If:
+              - ShouldConsumeCertificate
+              - 
+                AcmCertificateArn: ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.CertificateArn}}
+                SslSupportMethod: sni-only
+              - CloudFrontDefaultCertificate: true
               
   Outputs:
     

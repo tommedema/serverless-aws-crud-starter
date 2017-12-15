@@ -67,6 +67,8 @@ While this starter helps you get on your way quickly, you'll have to be comforta
     - scripts
     - engines
 - way of orchestration can be improved with [declarative dependencies and orchestrated deployments and  rollbacks](https://forum.serverless.com/t/orchestrating-deployment-and-sharing-stack-outputs-in-a-declarative-manner-with-lerna-repos/3319)
+  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?)
+  - https://github.com/serverless/serverless/pull/3575
 - enable standard.js linting in build tools
 - figure out why service level `npm run deploy` without STAGE env var does not print exception
 - consider using official lerna repo structure
@@ -107,7 +109,11 @@ Relevant resources
 
 ## Ask feedback
 - https://forum.serverless.com/u/bill
+- https://forum.serverless.com/u/kalinchernev
+- https://gitter.im/alexdebrie
+- https://gitter.im/HyperBrain
 - https://og-aws.slack.com/archives/C2M3XL0QP/p1512663131000753
+- https://serverless.com/blog/announcing-first-cohort-serverless-champions-2017/
 - Sindre
-- Geofrey
+- Geoffrey
 - Serverless chronicle
