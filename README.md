@@ -4,20 +4,17 @@ Serverless is a new paradigm that's easy to get started with but introduces seve
 
 * authentication, including social providers such as Google and Facebook
 * the ability to perform CRUD operations with GraphQL
-* the deployment, hosting, and caching of a server-side-rendered React applications using Gatsby.js
+* the deployment, hosting, and caching of server-side-rendered React applications based on Gatsby.js
 * the automatic configuration of a provided domain name, including https and www. prefix forwarding
 * the automatic requesting, validation, and renewal of SSL certificates
 
 All of this is done while adhering to the following core principles of this library:
 
-* 100% version control (infrastructure as code)
+* 100% version controlled (infrastructure as code)
 * 100% serverless (potentially infinite scalability)
-* high maintainability (function and component level modularity)
+* highly maintainable (function and component level modularity)
 
-In the future, it may be considered to take this another level further, where a development environment (perhaps cloud based) as well as an agile development management tool are included. Based on my experience, it is the integration of infrastructure, platform, and tooling that enables a development team to achieve a high and stable velocity. The vision of this project is to allow for the instant spawning of such projects, without having to think about infrastructural or managerial decisions again.
-
-
-This is only the first phase of this starter. In my experience, it is the integration of infrastructure, platform, and tooling that enables a development team to achieve a high and stable velocity. The vision of this project is to allow for the instant spawning of such projects, without having to think about infrastructural or managerial decisions again. This includes a seamless continuous integration or even deployment process, the instant availability of a fully-featured development environment, as well as the use of proven software development methodologies such as scrum or scrumban. As such, in a next phase of this starter, the following optional additions will be considered:
+This is only the first phase of this starter. Based on my experience as a CTO at a highly valued scale-up, it is the integration of infrastructure, platform, and tooling that enables a development team to achieve a stable and high velocity. The vision of this project is to allow for the instant spawning of such projects, without having to put much thought into infrastructural or managerial decisions again. This includes a seamless continuous integration or even deployment process, the instant availability of a fully-featured development environment, as well as the use of proven software development methodologies such as scrum or scrumban. As such, in a next phase of this starter, the following optional additions will be considered:
 
 * automatic setup of a full continuous integration process, with multi-branching
 * automatic provisioning of a fully featured development environment using Cloud9
@@ -43,6 +40,14 @@ You can easily preview a new branch by deploying it under a different stage. E.g
 
 ### Cleanup
 To remove a stage, run `STAGE=<my_feature> npm run remove` in the project directory.
+
+## Required knowledge
+
+While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further.
+
+* AWS Lambda, Cloudformation, IAM
+* Serverless framework
+* Node.js and Javascript
 
 ## To document
 - sub-service packages and commands
