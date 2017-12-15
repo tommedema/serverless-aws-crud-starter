@@ -1,7 +1,10 @@
-'use strict'
-
 const execa = require('execa')
 const getOutputFactory = require('./lib/get-cf-output')
+const getServiceOutputFactory = require('./lib/get-service-output')
+const readPkg = require('read-pkg')
+const path = require('path')
+const rootPkg = readPkg.sync(path.resolve(process.cwd(), '../..'))
+const projectName = rootPkg.name
 
 class DeployReactApp {
   constructor(serverless, options) {
@@ -9,6 +12,7 @@ class DeployReactApp {
     this.serverless = serverless
     this.options = options
     this.getOutput = getOutputFactory(serverless)
+    this.getServiceOutput = getServiceOutputFactory(serverless, options, projectName)
     
     // bindings
     this.log = this.log.bind(this)
@@ -26,11 +30,11 @@ class DeployReactApp {
     const region = this.options.region || this.serverless.service.provider.region
     const webBucketName = this.getOutput('WebBucketName')
     const webCloudfrontDistId = this.getOutput('WebCloudfrontDistId')
+    const cognitoUserPoolId = await this.getServiceOutput('auth', 'CognitoUserPoolId')
+    const cognitoUserPoolClientId = await this.getServiceOutput('auth', 'CognitoUserPoolClientId')
+    const cognitoIdentityPoolId = await this.getServiceOutput('auth', 'CognitoIdentityPoolId')
     
-    // FIXME: make these dynamic
-    const cognitoUserPoolId = 'eu-west-2_UgKF92Du6'
-    const cognitoUserPoolClientId = '6qetk7lki5hnvq2j1p4qi0tpo2'
-    const cognitoIdentityPoolId = 'eu-west-2:b2dff5d0-7eeb-49ed-9827-30671d80f935'
+    // TODO: make these dynamic
     const apiRoot = 'https://jbm30uov7i.execute-api.eu-west-2.amazonaws.com/dev/'
     const attachmentsBucketName = undefined
     
