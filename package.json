@@ -2,7 +2,12 @@
   "name": "serverless-aws-crud-starter",
   "version": "0.0.1",
   "slsConfig": {
-    "region": "eu-west-2"
+    "region": "eu-west-2",
+    "domains": {
+      "dev": {
+        "name": "tommedema.tk"
+      }
+    }
   },
   "description": "starter kit enabling single-command spawning of serverless applications with all infrastructure being version controlled",
   "scripts": {

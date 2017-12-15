@@ -8,6 +8,8 @@ plugins:
   - serverless-webpack
         
 custom:
+  projectName: ${{file(../../package.json):name}}
+  slsConfig: ${{file(../../package.json):slsConfig}}
   
   # allows for the exclusion of external modules to webpack
   webpackIncludeModules: true

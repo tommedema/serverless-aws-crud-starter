@@ -15,7 +15,7 @@ async function main() {
 }
 
 async function deployService(servicePath, stage) {
-  await execa('npm', ['run', 'deploy'], {
+  await execa('npm', ['run', 'deploy', '--'].concat(process.argv.slice(2)), {
     cwd: servicePath,
     env: {
       STAGE: stage

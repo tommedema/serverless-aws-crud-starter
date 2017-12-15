@@ -18,6 +18,7 @@ provider:
 
 custom:
   projectName: ${{file(../../package.json):name}}
+  slsConfig: ${{file(../../package.json):slsConfig}}
           
 resources:
    

@@ -22,8 +22,19 @@ provider:
 
 custom:
   projectName: ${{file(../../package.json):name}}
+  slsConfig: ${{file(../../package.json):slsConfig}}
           
 resources:
+  
+  Conditions:
+    
+    # true when a domain should be setup
+    # actual setup is taken care of by the domains service
+    ShouldSetupDomain:
+      Fn::Not:
+        - Fn::Equals:
+          - ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, 'none'}}
+          - 'none'
    
   Resources:
     
@@ -59,12 +70,11 @@ resources:
       Properties:
         DistributionConfig:
           Comment: cloudfront distribution pointing to web s3 bucket
-          # FIXME: this should be set once domains service is active
-          # Aliases:
-          #   - Fn::If:
-          #     - ShouldSetupDomain
-          #     - ${{self:custom.domains.${{self:provider.stage}}.name, ''}}
-          #     - Ref: 'AWS::NoValue'
+          Aliases:
+            - Fn::If:
+              - ShouldSetupDomain
+              - ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, ''}}
+              - Ref: 'AWS::NoValue'
           Origins:
           - DomainName:
               Fn::Join: ['.', [Ref: WebBucket, 's3-website', Ref: 'AWS::Region', 'amazonaws.com']]
@@ -111,5 +121,10 @@ resources:
       Description: id of the cloudfront distribution
       Value:
         Ref: WebCloudfrontDist
+        
+    WebCloudfrontDomainName:
+      Description: domain of the cloudfront distribution
+      Value:
+        Fn::GetAtt: [WebCloudfrontDist, DomainName]
     
         

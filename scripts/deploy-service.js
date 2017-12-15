@@ -30,7 +30,7 @@ async function deployService({ projectName, rootPath, stage, region, servicePath
      'deploy', '--aws-s3-accelerate', '--verbose',
      '--region', region,
      '--stage', stage
-  ], {
+  ].concat(process.argv.slice(2)), {
     cwd: servicePath,
     stdout: process.stdout,
     env: {
