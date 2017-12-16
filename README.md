@@ -49,7 +49,7 @@ While this starter helps you get on your way quickly, you'll have to be comforta
 * Serverless framework
 * Node.js and Javascript
 
-## To document
+## To document < 1.0.0
 - sub-service packages and commands
 - changing stage
 - how a AWS profile can be created for each ${PROJECT}-${STAGE} combination
@@ -57,32 +57,12 @@ While this starter helps you get on your way quickly, you'll have to be comforta
 - enabling a custom domain for a stage (e.g. production)
 - requesting a certificate for a custom domain
 
-## Improvements: general
-- break-up long strings and sls variables into [multiple lines](https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines#21699210)
-- set more service-level parameters on a project-level
-  - service-level serverless.yml
-    - frameworkVersion
-    - provider name, stage, variable syntax, region, stackTags
-  - service-level package.json
-    - scripts
-    - engines
-- way of orchestration can be improved with [declarative dependencies and orchestrated deployments and  rollbacks](https://forum.serverless.com/t/orchestrating-deployment-and-sharing-stack-outputs-in-a-declarative-manner-with-lerna-repos/3319)
-  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?)
-  - https://github.com/serverless/serverless/pull/3575
-- enable standard.js linting in build tools
-- figure out why service level `npm run deploy` without STAGE env var does not print exception
-- consider using official lerna repo structure
-- ensure that exceptions always have a stack trace in [cloudwatch](https://github.com/serverless-heaven/serverless-webpack/issues/291)
-- consider using [cloudformation changesets](https://github.com/trek10inc/serverless-cloudformation-changesets) with reviews prior to deployment
-- consider using [AWS SAM](https://d1.awsstatic.com/whitepapers/serverless-architectures-with-aws-lambda.pdf) as an abstraction layer on top of cloudformation
-- prompt prior to replacing special resources like dynamodb, s3, cloudfront
-
-## To do: general
+## To do: general < 1.0.0
 - ensure that `npm install` is run prior to deploy
 - implement service-level and project-level `npm run remove` with s3-remover plugin
 - use standard.js code style with linter for both backend and frontend
 
-## To do: TDD / local development
+## To do: TDD / local development < 1.0.0
 Including the mocking of AWS services like DynamoDB. To the extent that this is possible and not cumbersome. Also consider alternative approach where a TDD approach is used locally and you have to deploy to see integration with services working.
 
 Relevant resources
@@ -92,7 +72,28 @@ Relevant resources
 - https://serverless.com/blog/serverless-ops-logs/
 - https://serverless.com/blog/serverless-ops-metrics/
 
-## Next considerations
+## Improvements: general < 1.0.0
+- ensure that exceptions always have a stack trace in [cloudwatch](https://github.com/serverless-heaven/serverless-webpack/issues/291)
+- break-up long strings and sls variables into [multiple lines](https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines#21699210)
+- set more service-level parameters on a project-level
+  - service-level serverless.yml
+    - frameworkVersion
+    - provider name, stage, variable syntax, region, stackTags
+  - service-level package.json
+    - scripts
+    - engines
+
+## Improvements: general
+- way of orchestration can be improved with [declarative dependencies and orchestrated deployments and  rollbacks](https://forum.serverless.com/t/orchestrating-deployment-and-sharing-stack-outputs-in-a-declarative-manner-with-lerna-repos/3319)
+  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?)
+  - https://github.com/serverless/serverless/pull/3575
+- figure out why service level `npm run deploy` without STAGE env var does not print exception
+- consider using official lerna repo structure
+- consider using [cloudformation changesets](https://github.com/trek10inc/serverless-cloudformation-changesets) with reviews prior to deployment
+- consider using [AWS SAM](https://d1.awsstatic.com/whitepapers/serverless-architectures-with-aws-lambda.pdf) as an abstraction layer on top of cloudformation
+- prompt prior to replacing special resources like dynamodb, s3, cloudfront
+
+## Next considerations > 1.0.0
 - read the AWS well-architected serverless lens [whitepaper](https://d1.awsstatic.com/whitepapers/architecture/AWS-Serverless-Applications-Lens.pdf)
 - integrated [cloud IDE](https://aws.amazon.com/cloud9/) with debugging and CI
   - https://dev.to/kayis/10-easy-steps-to-create-aws-lambda-functions-with-the-serverless-framework--reason-in-aws-cloud9-8d1?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_16
@@ -107,7 +108,7 @@ Relevant resources
 - green/blue deployments
 - integrated agile development tooling (scrumban)
 
-## Ask feedback
+## Ask feedback for v1.0.0
 - https://forum.serverless.com/u/bill
 - https://forum.serverless.com/u/kalinchernev
 - https://gitter.im/alexdebrie
