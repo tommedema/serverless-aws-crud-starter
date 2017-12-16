@@ -95,17 +95,17 @@ Relevant resources
 
 ## Next considerations > 1.0.0
 - read the AWS well-architected serverless lens [whitepaper](https://d1.awsstatic.com/whitepapers/architecture/AWS-Serverless-Applications-Lens.pdf)
-- integrated [cloud IDE](https://aws.amazon.com/cloud9/) with debugging and CI
-  - https://dev.to/kayis/10-easy-steps-to-create-aws-lambda-functions-with-the-serverless-framework--reason-in-aws-cloud9-8d1?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_16
-  - http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloud9-environmentec2.html
-  - https://dev.to/kayis/10-easy-steps-to-create-aws-lambda-functions-with-the-serverless-framework--reason-in-aws-cloud9-8d1?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_15
 - CI/CD as code
   - https://github.com/serverless/blog/blob/master/posts/2017-02-22-cicd-for-serverless-part-2.md
   - (Gitlab or [AWS Codepipeline](https://cloudonaut.io/aws-velocity-serverless-app/))
   - https://forums.aws.amazon.com/ann.jspa?annID=5240
   - [circleCI](https://serverless.com/blog/ci-cd-workflow-serverless-apps-with-circleci/)
+  - green/blue deployments
+- integrated [cloud IDE](https://aws.amazon.com/cloud9/) with debugging and CI
+  - https://dev.to/kayis/10-easy-steps-to-create-aws-lambda-functions-with-the-serverless-framework--reason-in-aws-cloud9-8d1?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_16
+  - http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cloud9-environmentec2.html
+  - https://dev.to/kayis/10-easy-steps-to-create-aws-lambda-functions-with-the-serverless-framework--reason-in-aws-cloud9-8d1?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_15
 - automatically generated documentation
-- green/blue deployments
 - integrated agile development tooling (scrumban)
 
 ## Ask feedback for v1.0.0
