@@ -83,7 +83,7 @@ Relevant resources
     - scripts
     - engines
 
-## Improvements: general
+## Improvements: general > 1.0.0
 - way of orchestration can be improved with [declarative dependencies and orchestrated deployments and  rollbacks](https://forum.serverless.com/t/orchestrating-deployment-and-sharing-stack-outputs-in-a-declarative-manner-with-lerna-repos/3319)
   - use `Fn::ImportValue:` instead of `cf:` (also in plugins?)
   - https://github.com/serverless/serverless/pull/3575
