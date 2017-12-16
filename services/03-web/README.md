@@ -2,6 +2,7 @@
 
 ## Improvements < 1.0.0
 - prevent [caching of service-worker.js using custom headers](https://github.com/facebookincubator/create-react-app/tree/master/packages/react-scripts/template#offline-first-considerations)
+  - or set it to [1~5 mins](https://stackoverflow.com/questions/38843970/service-worker-javascript-update-frequency-every-24-hours/38854905#38854905)
 - only rebuild and redeploy web app when necessary, or consider --web option < 1.0.0
   - web app code changed
   - cloudformation references injected into web app changed
