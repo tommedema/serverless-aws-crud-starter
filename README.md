@@ -30,6 +30,19 @@ Since these last features are more distant from code, they can be opted out from
 2. create aws account with api user with administrator rights
 3. define aws profile based on project name and stage
 
+### AWS profile configuration
+For security reasons, each project and stage combination is recommended to run on its own sandboxed AWS account. If you are running multiple non-production environments, it's acceptable to deploy these to the same account, but you still need to create an AWS profile for each. A AWS profile is named after the project's name postfixed by a hyphen (`-`) and the name of your stage. You should add these profiles to your `~/.aws/credentials` file. For example:
+
+_~/.aws/credentials_
+```
+[serverless-aws-crud-starter-prod]
+aws_access_key_id = XXXXXXXXXXXXXXXXXXXX
+aws_secret_access_key = YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+[serverless-aws-crud-starter-dev]
+aws_access_key_id = XXXXXXXXXXXXXXXXXXXX
+aws_secret_access_key = YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+```
+
 ### Installation
 1. `$ git clone repo`
 2. `$ STAGE=dev npm run deploy`
@@ -37,6 +50,28 @@ Since these last features are more distant from code, they can be opted out from
 ### Previewing branches
 You can easily preview a new branch by deploying it under a different stage. E.g.:
 `$ STAGE=<my_feature> npm run deploy`
+
+### Adding a domain
+If you have a domain, simply add it to your package.json under `slsConfig.domains.${stage_name}` where `${stage_name}` is the name of your stage or environment (e.g. dev, prod, or a name of a feature branch):
+
+_package.json_
+```
+{
+  ...
+  "slsConfig": {
+    "region": "eu-west-2",
+    "domains": {
+      "dev": {
+        "name": "my-domain.com",
+        "requestCertificate": true
+      }
+    }
+  },
+  ...
+}
+```
+
+Once deployed, you will be informed to set your domain's nameservers. If you have `requestCertificate` set to true, a certificate will be requested and validated automatically as soon as your nameservers are set up. Once validated, the next deploy will cause the certificate to be activated and for all traffic to start using the `https` protocol. Certificates are automatically renewed.
 
 ### Cleanup
 To remove a stage, run `STAGE=<my_feature> npm run remove` in the project directory.
@@ -58,6 +93,7 @@ While this starter helps you get on your way quickly, you'll have to be comforta
 - requesting a certificate for a custom domain
 
 ## To do: general < 1.0.0
+- create [sls deploy PR](https://github.com/serverless/serverless/issues/4545)
 - ensure that `npm install` is run prior to deploy
 - implement service-level and project-level `npm run remove` with s3-remover plugin
 - use standard.js code style with linter for both backend and frontend
@@ -107,6 +143,7 @@ Relevant resources
   - https://dev.to/kayis/10-easy-steps-to-create-aws-lambda-functions-with-the-serverless-framework--reason-in-aws-cloud9-8d1?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_15
 - automatically generated documentation
 - integrated agile development tooling (scrumban)
+- consider creating an apex-terraform-starter with same functionality for comparison
 
 ## Ask feedback for v1.0.0
 - https://forum.serverless.com/u/bill

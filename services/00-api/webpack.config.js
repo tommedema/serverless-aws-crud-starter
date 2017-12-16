@@ -18,7 +18,10 @@ module.exports = {
     filename: "[name].js",
     sourceMapFilename: "[file].map"
   },
-  externals: [nodeExternals()],
+  externals: [
+    nodeExternals({ modulesDir: path.resolve(__dirname, './node_modules') }),
+    nodeExternals({ modulesDir: path.resolve(__dirname, '../../node_modules') })
+  ],
   module: {
     rules: [
       {

@@ -7,6 +7,10 @@
       "dev": {
         "name": "tommedema.tk",
         "requestCertificate": true
+      },
+      "acm": {
+        "name": "tommedema-acm.tk",
+        "requestCertificate": true
       }
     }
   },

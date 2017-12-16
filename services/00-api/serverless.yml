@@ -12,7 +12,10 @@ custom:
   slsConfig: ${{file(../../package.json):slsConfig}}
   
   # allows for node modules to be separately included into artifact zip
-  webpackIncludeModules: true
+  # exclude aws-sdk because it is pre-installed on AWS lambda
+  webpackIncludeModules:
+    forceExclude:
+      - aws-sdk
     
 provider:
   name: aws
