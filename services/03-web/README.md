@@ -1,7 +1,6 @@
 # Web
 
 ## Improvements < 1.0.0
-- investigate when cloudfront is not caching (`x-cache:Miss from cloudfront`)
 - prevent [caching of service-worker.js using custom headers](https://github.com/facebookincubator/create-react-app/tree/master/packages/react-scripts/template#offline-first-considerations)
 - only rebuild and redeploy web app when necessary, or consider --web option < 1.0.0
   - web app code changed
