@@ -12,6 +12,7 @@
   - https://aws.amazon.com/about-aws/whats-new/2017/12/amazon-aurora-with-mysql-compatibility-natively-supports-synchronous-invocation-of-aws-lambda-functions/?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_16
 
 ## Improvements > 1.0.0
+- prevent repackaging when functions have not changed
 - use individual packaging
 - organize s3 attachments bucket files by user folder rather than prefix
 - consider adding [custom domain to API gateway](https://github.com/dougmoscrop/serverless-plugin-custom-domain)

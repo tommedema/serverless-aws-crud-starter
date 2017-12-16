@@ -20,6 +20,7 @@
 - after writing unit tests, refactor request-certificate.js async.forever to use [do/while with async/await](https://github.com/caolan/async/issues/1503#issuecomment-350576515)
 
 ## Improvements > 1.0.0
+- prevent repackaging when functions have not changed
 - when possible, remove need for custom lambda backed resource to create DNS validated ACM certificates and do this [directly through cloudformation](https://aws.amazon.com/blogs/security/easier-certificate-validation-using-dns-with-aws-certificate-manager/#comment-3651528530)
   - remove the need to have a plugin that checks if certificate is valid
 - don't package aws-sdk once [lambda version](http://docs.aws.amazon.com/lambda/latest/dg/current-supported-versions.html) is >= 2.156; and then enable individual packaging
