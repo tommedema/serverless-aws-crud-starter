@@ -117,8 +117,7 @@ resources:
           ViewerCertificate:
             Fn::If:
               - ShouldConsumeCertificate
-              - 
-                AcmCertificateArn: ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.CertificateArn}}
+              - AcmCertificateArn: ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.CertificateArn}}
                 SslSupportMethod: sni-only
               - CloudFrontDefaultCertificate: true
               

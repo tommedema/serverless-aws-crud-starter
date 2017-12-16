@@ -42,6 +42,14 @@ resources:
         - Fn::Equals:
           - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.ShouldRequestCertificate}}
           - 'true'
+      
+    # true when a ssl certificate should be used    
+    ShouldConsumeCertificate:
+      Fn::And:
+        - Condition: ShouldSetupDomain
+        - Fn::Equals:
+          - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.ShouldConsumeCertificate}}
+          - 'true'
    
   Resources:
     
@@ -72,6 +80,18 @@ resources:
           AliasTarget:
             DNSName: ${{cf:${{self:custom.projectName}}-web-${{self:provider.stage}}.WebCloudfrontDomainName}}
             HostedZoneId: Z2FDTNDATAQYW2
+        - Type: A
+          Name: www.${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, ''}}
+          AliasTarget:
+            DNSName:
+              Fn::GetAtt: [WebRedirectCloudfrontDist, DomainName]
+            HostedZoneId: Z2FDTNDATAQYW2
+        - Type: AAAA
+          Name: www.${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, ''}}
+          AliasTarget:
+            DNSName:
+              Fn::GetAtt: [WebRedirectCloudfrontDist, DomainName]
+            HostedZoneId: Z2FDTNDATAQYW2
             
     # additional route53 record sets for DNS certificate validation
     # note that the HostedZoneId is fixed for record sets, as described at
@@ -93,6 +113,75 @@ resources:
           ResourceRecords:
             - ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.DNSWWWRecordValue}}
           TTL: '900'
+          
+    # if a domain is set: s3 bucket used to redirect www traffic to root domain
+    WebRedirectBucket:
+      Type: AWS::S3::Bucket
+      Condition: ShouldSetupDomain
+      Properties:
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          RedirectAllRequestsTo:
+            HostName: ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, ''}}
+            Protocol:
+              Fn::If:
+                - ShouldConsumeCertificate
+                - https
+                - Ref: 'AWS::NoValue'
+            
+    # if a domain is set: enable public read for web redirect bucket
+    WebRedirectBucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Condition: ShouldSetupDomain
+      Properties:
+        Bucket:
+          Ref: WebRedirectBucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadForGetBucketObjects
+              Effect: Allow
+              Principal: '*'
+              Action: s3:GetObject
+              Resource:
+                Fn::Join: ['', [Fn::GetAtt: [WebRedirectBucket, Arn], '/*']]
+
+    # if a domain is set: cloudfront for www redirect s3 bucket
+    WebRedirectCloudfrontDist:
+      Type: AWS::CloudFront::Distribution
+      Condition: ShouldSetupDomain
+      Properties:
+        DistributionConfig:
+          Comment: cloudfront distribution pointing to web redirect s3 bucket
+          Aliases:
+            - www.${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, ''}}
+          Origins:
+          - DomainName:
+              Fn::Join: ['.', [Ref: WebRedirectBucket, 's3-website', Ref: 'AWS::Region', 'amazonaws.com']]
+            Id: S3Origin
+            CustomOriginConfig:
+              HTTPPort: '80'
+              HTTPSPort: '443'
+              OriginProtocolPolicy: http-only
+          Enabled: true
+          HttpVersion: 'http2'
+          DefaultCacheBehavior:
+            AllowedMethods:
+            - GET
+            - HEAD
+            Compress: true
+            TargetOriginId: S3Origin
+            ForwardedValues:
+              QueryString: true
+              Cookies:
+                Forward: none
+            ViewerProtocolPolicy: redirect-to-https
+          ViewerCertificate:
+            Fn::If:
+              - ShouldConsumeCertificate
+              - AcmCertificateArn: ${{cf:${{self:custom.projectName}}-ssl-${{self:provider.stage}}.CertificateArn}}
+                SslSupportMethod: sni-only
+              - CloudFrontDefaultCertificate: true
+          PriceClass: PriceClass_All
               
   Outputs:
     
