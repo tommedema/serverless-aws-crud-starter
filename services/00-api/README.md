@@ -13,7 +13,6 @@
 
 ## Improvements > 1.0.0
 - prevent repackaging when functions have not changed
-- use individual packaging
 - organize s3 attachments bucket files by user folder rather than prefix
 - consider adding [custom domain to API gateway](https://github.com/dougmoscrop/serverless-plugin-custom-domain)
 - consider keeping lambdas warm using a plugin like serverless-plugin-warmup

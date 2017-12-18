@@ -16,6 +16,9 @@ custom:
   webpackIncludeModules:
     forceExclude:
       - aws-sdk
+      
+package:
+  individually: true
     
 provider:
   name: aws
