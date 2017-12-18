@@ -2,7 +2,9 @@
   "name": "serverless-aws-crud-starter-ssl",
   "version": "0.0.1",
   "scripts": {
-    "deploy": "node ../../scripts/deploy-service"
+    "deploy": "node ../../scripts/run-sls deploy",
+    "package": "node ../../scripts/run-sls deploy",
+    "remove": "node ../../scripts/run-sls remove"
   },
   "engines": {
     "node": ">=9.2.1",

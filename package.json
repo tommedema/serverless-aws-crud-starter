@@ -16,7 +16,8 @@
   },
   "description": "starter kit enabling single-command spawning of serverless applications with all infrastructure being version controlled",
   "scripts": {
-    "deploy": "node scripts/deploy"
+    "deploy": "node scripts/run-services deploy a-z",
+    "remove": "node scripts/run-services remove z-a"
   },
   "repository": {
     "type": "git",
