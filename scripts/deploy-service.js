@@ -39,11 +39,4 @@ async function deployService({ projectName, rootPath, stage, region, servicePath
   })
 }
 
-(async () => {
-  try {
-    await main()
-  } catch (err) {
-    console.error(err)
-    process.exit(err.code)
-  }
-})()
+main().catch(err => { throw err })
