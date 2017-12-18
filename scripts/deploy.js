@@ -7,6 +7,8 @@ async function main() {
   const services = Array.from(await listDirectories(path.resolve(__dirname, '../services'))).sort()
   const stage = env.require('STAGE')
   
+  await execa('npm', ['install'], { cwd: path.resolve(__dirname, '..'), stdout: process.stdout })
+  
   for (let servicePath of services) {
     await deployService(servicePath, stage)
   }
@@ -15,6 +17,8 @@ async function main() {
 }
 
 async function deployService(servicePath, stage) {
+  await execa('npm', ['install'], { cwd: servicePath, stdout: process.stdout })
+  
   await execa('npm', ['run', 'deploy', '--'].concat(process.argv.slice(2)), {
     cwd: servicePath,
     env: {
@@ -24,12 +28,4 @@ async function deployService(servicePath, stage) {
   })
 }
 
-(async () => {
-  try {
-    main()
-  }
-  catch (err) {
-    console.error(err)
-    process.exit(err.code)
-  }
-})()
+main().catch(err => { throw err })

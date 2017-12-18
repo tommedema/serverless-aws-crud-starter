@@ -94,7 +94,6 @@ While this starter helps you get on your way quickly, you'll have to be comforta
 
 ## To do: general < 1.0.0
 - create [sls deploy PR](https://github.com/serverless/serverless/issues/4545)
-- ensure that `npm install` is run prior to deploy
 - implement service-level and project-level `npm run remove` with s3-remover plugin
 - use standard.js code style with linter for both backend and frontend
 

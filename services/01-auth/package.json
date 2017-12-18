@@ -4,7 +4,7 @@
   "scripts": {
     "deploy": "node ../../scripts/deploy-service"
   },
-  "engines" : {
+  "engines": {
     "node": ">=9.2.1",
     "npm": ">=5.6.0"
   }
