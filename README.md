@@ -94,7 +94,13 @@ While this starter helps you get on your way quickly, you'll have to be comforta
 
 ## To do: general < 1.0.0
 - create [sls deploy PR](https://github.com/serverless/serverless/issues/4545)
-- implement service-level and project-level `npm run remove` with s3-remover plugin
+- implement more npm scripts
+  - verify project and service-level commands
+    - `STAGE=dev npm run deploy`
+    - `STAGE=dev npm run deploy -- --force`
+    - `STAGE=dev npm run package`
+    - `STAGE=dev npm run remove`
+  - fork s3-remover to support `Ref:` and use it for `npm run remove`
 - use standard.js code style with linter for both backend and frontend
 
 ## To do: TDD / local development < 1.0.0
