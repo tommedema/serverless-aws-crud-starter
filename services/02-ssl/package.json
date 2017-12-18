@@ -14,7 +14,7 @@
     "async-retry": "^1.1.4",
     "async.forever": "^0.5.2",
     "aws-sdk": "^2.170.0",
-    "cfn-response": "^1.0.1",
+    "cfn-responder": "^1.0.2",
     "lodash.get": "^4.4.2",
     "p-filter": "^1.0.0",
     "pify": "^3.0.0"

@@ -1,5 +1,5 @@
 import ACMClient from 'aws-sdk/clients/acm'
-import response from 'cfn-response'
+import responder from 'cfn-responder'
 import promisify from 'pify'
 import retry from 'async-retry'
 import foreverSync from 'async.forever'
@@ -21,10 +21,11 @@ export const handler = async (event, context) => {
   const mock = event.Mock
     
   console.log(`request type is ${event.RequestType}`)
-  if (!['Create', 'Update'].includes(event.RequestType)) {
-    console.log('can ignore this request type')
+  if (event.RequestType === 'Delete') {
+    console.log('will accept this delete, though certificate is not deleted')
     
-    return !mock && response.send(event, context, response.SUCCESS, {})
+    return !mock && responder.send(event, context, responder.SUCCESS, {},
+      event.PhysicalResourceId, { logLevel: 'debug' })
   }
   
   // check if there is already an issued certificate available with CNAME DNS records
@@ -94,10 +95,10 @@ export const handler = async (event, context) => {
     if (!['PENDING_VALIDATION', 'ISSUED'].includes(certificateDescription.Status)) {
       console.log('certificate is not yet issued and is not pending validation')
   
-      return bail(!mock && response.send(event, context, response.FAILED, {
+      return bail(!mock && responder.send(event, context, responder.FAILED, {
         err: new Error(`requested acm certificate has unexpected 
           status of ${certificateDescription.Status}`)
-      }))
+      }, acmArn, { logLevel: 'debug' }))
     }
   
     // if it does not yet have DNS records
@@ -129,11 +130,12 @@ export const handler = async (event, context) => {
   console.log(`received validation records with root name ${rootRecordName},
     root value ${rootRecordValue}, www name ${wwwRecordName}, and www value ${wwwRecordValue}`)
   
-  return !mock && response.send(event, context, response.SUCCESS, {
+  // the custom resource is physically identified by the arn of the certificate
+  return !mock && responder.send(event, context, responder.SUCCESS, {
     acmArn,
     rootRecordName,
     rootRecordValue,
     wwwRecordName,
     wwwRecordValue
-  })
+  }, acmArn, { logLevel: 'debug' })
 }
