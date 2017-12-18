@@ -2,11 +2,6 @@
 
 ## ToDo < 1.0.0
 
-- ~~include CNAME records for dns validation~~
-- ~~resolve circular dependency to include ssl certificate in web cloudfront and domains service redirect dist~~
-  - ~~web depends on ssl's certificate~~
-  - ~~ssl depends on domain's hosted zone, which depends on web's cloudfront distribution~~
-- ~~change web's and domains' cloudfront distributions' ViewerProtocolPolicy to redirect-to-https if ssl is enabled~~
 - properly provide physical ID from lambda to prevent unexpected Delete requests to the "old" service
   - change to https://www.npmjs.com/package/cfn-responder
   - delete created certificates on actual stack deletion (perhaps use tags to identify?)
