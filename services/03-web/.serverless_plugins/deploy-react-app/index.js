@@ -28,13 +28,17 @@ class DeployReactApp {
     this.log('compiling web app with cloudformation outputs')
 
     const region = this.options.region || this.serverless.service.provider.region
-    const webBucketName = this.getOutput('WebBucketName')
-    const webCloudfrontDistId = this.getOutput('WebCloudfrontDistId')
+    const apiRoot = await this.getServiceOutput('api', 'ServiceEndpoint')
+    const attachmentsBucketName = null
+    
     const cognitoUserPoolId = await this.getServiceOutput('auth', 'CognitoUserPoolId')
     const cognitoUserPoolClientId = await this.getServiceOutput('auth', 'CognitoUserPoolClientId')
     const cognitoIdentityPoolId = await this.getServiceOutput('auth', 'CognitoIdentityPoolId')
-    const apiRoot = await this.getServiceOutput('api', 'ServiceEndpoint')
-    const attachmentsBucketName = undefined
+    
+    const webBucketName = this.getOutput('WebBucketName')
+    const webCloudfrontDistId = this.getOutput('WebCloudfrontDistId')
+    const webRedirectCloudfrontDistId = await this.getServiceOutput('domains',
+      'WebRedirectCloudfrontDistId')
     
     this.log(`gathered cloudformation outputs:
       region: ${region}
@@ -44,7 +48,8 @@ class DeployReactApp {
       cognitoUserPoolClientId: ${cognitoUserPoolClientId}
       cognitoIdentityPoolId: ${cognitoIdentityPoolId}
       webBucketName: ${webBucketName}
-      webCloudfrontDistId: ${webCloudfrontDistId}`)
+      webCloudfrontDistId: ${webCloudfrontDistId}
+      webRedirectCloudfrontDistId: ${webRedirectCloudfrontDistId}`)
 
     this.log('compiling and deploying for web')
       
@@ -61,13 +66,15 @@ class DeployReactApp {
       stdout: process.stdout
     })
     
-    const sync = await execa('aws', ['s3', 'sync', 'build/', `s3://${webBucketName}`], {
+    await execa('aws', ['s3', 'sync', 'build/', `s3://${webBucketName}`], {
       cwd: `${process.cwd()}/app`,
       stdout: process.stdout
     })
     
-    const invalidate = await  execa('aws', ['cloudfront', 'create-invalidation',
-      '--distribution-id', webCloudfrontDistId, '--paths', '/*'], { stdout: process.stdout })
+    for (let dist of [webCloudfrontDistId, webRedirectCloudfrontDistId]) {
+      dist && await  execa('aws', ['cloudfront', 'create-invalidation',
+        '--distribution-id', dist, '--paths', '/*'], { stdout: process.stdout })
+    }
   }
   
   log(msg) {

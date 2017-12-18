@@ -197,3 +197,8 @@ resources:
       Value:
         Fn::Join: [',', Fn::GetAtt: [WebHostedZone, NameServers]]
         
+    WebRedirectCloudfrontDistId:
+      Description: id of the www redirect cloudfront distribution
+      Value:
+        Ref: WebRedirectCloudfrontDist
+        
