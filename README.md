@@ -154,3 +154,4 @@ Relevant resources
 - Sindre
 - Geoffrey
 - Serverless chronicle
+- Youri van der lans
