@@ -1,14 +1,16 @@
 # Web
 
-## Improvements < 1.0.0
+## ToDo < 1.0.0
+- use [AWS amplify](https://github.com/AnomalyInnovations/serverless-stack-com/issues/193)
 - prevent [caching of service-worker.js using custom headers](https://github.com/facebookincubator/create-react-app/tree/master/packages/react-scripts/template#offline-first-considerations)
   - or set it to [1~5 mins](https://stackoverflow.com/questions/38843970/service-worker-javascript-update-frequency-every-24-hours/38854905#38854905)
 - only rebuild and/or redeploy web app when necessary, or consider --web option < 1.0.0
   - (dangerous) change in source: web app code changed
   - (safe) change in build: cloudformation references injected into web app changed
 - consider SSR or static alternatives (with serverless?)
+  - https://github.com/artoliukkonen/serverless-isomorphic-react-boilerplate
   - [Gatsby](https://www.gatsbyjs.org/)
-  - Next.js
+  - [Next.js](https://forum.serverless.com/t/using-next-js-and-serverless-together-ssr-react-hmr/3875)
   - [React Slingshot](https://github.com/coryhouse/react-slingshot)
   - [Create react app](https://github.com/facebookincubator/create-react-app) (does not seem to have SSR)
 
@@ -32,3 +34,5 @@ Relevant resources
 ## Improvements > 1.0.0
 
 - move `deploy-react-app` plugin outside of this repo and publish to NPM
+- use [Lambda@Edge](https://medium.com/@idvb/6-things-i-wish-i-had-known-before-going-serverless-502236cf5540) to deal with www prefix, 404s and url rewriting properly
+- use [WAF](https://medium.com/@idvb/6-things-i-wish-i-had-known-before-going-serverless-502236cf5540) to protect access to review/staging environments

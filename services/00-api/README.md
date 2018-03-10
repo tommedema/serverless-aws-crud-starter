@@ -6,6 +6,7 @@
 
 ## Improvements < 1.0.0
 - switch to using GraphQL
+  - https://serverless.com/blog/running-scalable-reliable-graphql-endpoint-with-serverless/
 - consider [serverless aurora](https://serverless.com/blog/serverless-aurora-future-of-data/) instead of dynamodb
   - https://read.acloud.guru/why-amazon-dynamodb-isnt-for-everyone-and-how-to-decide-when-it-s-for-you-aefc52ea9476
   - otherwise at least enable [auto scaling for dynamodb](https://github.com/medikoo/serverless-plugin-dynamodb-autoscaling)
