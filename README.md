@@ -26,9 +26,16 @@ Since these last features are more distant from code, they can be opted out from
 
 ### Prerequisites
 
-1. node, aws cli
-2. create aws account with api user with administrator rights
+1. Node.js
+2. AWS cli
+3. AWS account with an API user with administrator rights
+
+### Installation
+1. `$ git clone repo`
+2. edit `package.json` with your project's name, AWS region, and optionally define your domain names (per stage)
 3. define aws profile based on project name and stage
+4. `npm install`
+5. `$ STAGE=dev npm run deploy`
 
 ### AWS profile configuration
 For security reasons, each project and stage combination is recommended to run on its own sandboxed AWS account. If you are running multiple non-production environments, it's acceptable to deploy these to the same account, but you still need to create an AWS profile for each. A AWS profile is named after the project's name postfixed by a hyphen (`-`) and the name of your stage. You should add these profiles to your `~/.aws/credentials` file. For example:
@@ -42,10 +49,6 @@ aws_secret_access_key = YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 aws_access_key_id = XXXXXXXXXXXXXXXXXXXX
 aws_secret_access_key = YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 ```
-
-### Installation
-1. `$ git clone repo`
-2. `$ STAGE=dev npm run deploy`
 
 ### Previewing branches
 You can easily preview a new branch by deploying it under a different stage. E.g.:
@@ -78,19 +81,17 @@ To remove a stage, run `STAGE=<my_feature> npm run remove` in the project direct
 
 ## Required knowledge
 
-While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further.
+While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further and customize it to an actual project.
 
-* AWS Lambda, Cloudformation, IAM
-* Serverless framework
-* Node.js and Javascript
+* AWS Lambda, AWS Cloudformation, AWS IAM, AWS Cognito
+* Serverless Framework
+* Node.js and Javascript ES6
 
 ## To document < 1.0.0
 - sub-service packages and commands
 - changing stage
 - how a AWS profile can be created for each ${PROJECT}-${STAGE} combination
   - why to use account based separation with a link to recommendation of amazon itself
-- enabling a custom domain for a stage (e.g. production)
-- requesting a certificate for a custom domain
 
 ## To do: general < 1.0.0
 - create [sls deploy PR](https://github.com/serverless/serverless/issues/4545)
