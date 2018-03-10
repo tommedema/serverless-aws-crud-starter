@@ -1,5 +1,4 @@
 {
-  "name": "serverless-aws-crud-starter-auth",
   "version": "0.0.1",
   "scripts": {
     "deploy": "node ../../scripts/run-sls deploy",

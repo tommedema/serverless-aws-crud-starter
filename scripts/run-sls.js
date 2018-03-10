@@ -8,23 +8,20 @@ const command = process.argv[2]
 const args = process.argv.slice(3)
 
 async function main() {
-  const servicePkg = await readPkg(servicePath)
   const rootPkg = await readPkg(rootPath)
   
   const opts = {
     servicePath,
     rootPath,
-    servicePkg,
     rootPkg,
     stage: env.require('STAGE'),
     region: rootPkg.slsConfig.region,
-    serviceName: servicePkg.name,
     projectName: rootPkg.name
   }
   
-  console.log(`running ${command} for service ${opts.serviceName}`)
+  console.log(`running ${command} for service with path ${opts.servicePath}`)
   await runForService(opts)
-  console.log(`ran ${command} for service ${opts.serviceName}`)
+  console.log(`ran ${command} for service with path ${opts.servicePath}`)
 }
 
 async function runForService({ projectName, rootPath, stage, region, servicePath }) {

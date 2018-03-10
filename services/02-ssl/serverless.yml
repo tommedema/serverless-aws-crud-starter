@@ -1,6 +1,6 @@
 frameworkVersion: '=1.24.1'
 
-service: ${{file(./package.json):name}}
+service: ${{file(../../package.json):name}}-ssl
 
 plugins:
   # transpile functions' ES7 to ES5 for provider runtime compatibility

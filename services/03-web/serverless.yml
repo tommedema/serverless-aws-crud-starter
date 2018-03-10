@@ -1,6 +1,6 @@
 frameworkVersion: '=1.24.1'
 
-service: ${{file(./package.json):name}}
+service: ${{file(../../package.json):name}}-web
 
 # compile the web app after cloudformation stack data is known
 plugins:

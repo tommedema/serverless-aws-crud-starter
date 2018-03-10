@@ -7,10 +7,6 @@
       "dev": {
         "name": "tommedema.tk",
         "requestCertificate": true
-      },
-      "acm": {
-        "name": "tommedema-acm.tk",
-        "requestCertificate": true
       }
     }
   },
@@ -46,6 +42,9 @@
     "execa": "^0.8.0",
     "gulp": "^3.9.1",
     "gulp-cli": "^2.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-tap": "^1.0.1",
     "list-directories": "^1.1.0",
     "lodash.get": "^4.4.2",
     "pify": "^3.0.0",
