@@ -74,7 +74,9 @@ _package.json_
 }
 ```
 
-Once deployed, you will be informed to set your domain's nameservers. If you have `requestCertificate` set to true, a certificate will be requested and validated automatically as soon as your nameservers are set up. Once validated, the next deploy will cause the certificate to be activated and for all traffic to start using the `https` protocol. Certificates are automatically renewed.
+Once deployed, you will be informed to set your domain's nameservers. If you have `requestCertificate` set to true, a certificate will be requested and validated automatically as soon as your nameservers are set up. Once validated, the next deploy will cause the certificate to be activated and for all traffic to start using the `https` protocol. Certificates are automatically renewed. In summary, you may have to deploy twice to get a fully functioning SSL-enabled domain:
+1. The first deploy creates your hosted zones and informs you about the nameservers you should set your domain to. It will also request a certificate and prepare DNS based domain validation entries for your hosted zone.
+2. Subsequent deploys will check if your domain is now propagating correctly to your hosted zone. If so, it will be verified automatically by AWS Certificate Manager through DNS. Once you deploy while the certificate is verified, it will start to be used by the cloudfront distributions and all HTTP traffic will be redirected to HTTPS.
 
 ### Cleanup
 To remove a stage, run `STAGE=<my_feature> npm run remove` in the project directory.
