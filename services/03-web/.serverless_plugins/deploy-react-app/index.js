@@ -52,6 +52,11 @@ class DeployReactApp {
       webRedirectCloudfrontDistId: ${webRedirectCloudfrontDistId}`)
 
     this.log('compiling and deploying for web')
+    
+    await execa('npm', ['install'], {
+      cwd: `${process.cwd()}/app`,
+      stdout: process.stdout
+    })
       
     await execa('npm', ['run', 'build'], {
       env: {
