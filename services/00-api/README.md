@@ -5,14 +5,14 @@
 - s3 store for attachments, with appropriate user rights (inject bucket name into web build config)
 
 ## Improvements < 1.0.0
-- switch to using GraphQL
-  - https://serverless.com/blog/running-scalable-reliable-graphql-endpoint-with-serverless/
 - consider [serverless aurora](https://serverless.com/blog/serverless-aurora-future-of-data/) instead of dynamodb
   - https://read.acloud.guru/why-amazon-dynamodb-isnt-for-everyone-and-how-to-decide-when-it-s-for-you-aefc52ea9476
   - otherwise at least enable [auto scaling for dynamodb](https://github.com/medikoo/serverless-plugin-dynamodb-autoscaling)
   - https://aws.amazon.com/about-aws/whats-new/2017/12/amazon-aurora-with-mysql-compatibility-natively-supports-synchronous-invocation-of-aws-lambda-functions/?utm_campaign=Serverless%2BDigest&utm_medium=email&utm_source=Serverless_Digest_16
 
 ## Improvements > 1.0.0
+- switch to using GraphQL?
+  - https://serverless.com/blog/running-scalable-reliable-graphql-endpoint-with-serverless/
 - prevent repackaging when functions have not changed
 - organize s3 attachments bucket files by user folder rather than prefix
 - consider adding [custom domain to API gateway](https://github.com/dougmoscrop/serverless-plugin-custom-domain)

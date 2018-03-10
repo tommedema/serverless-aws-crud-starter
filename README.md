@@ -161,13 +161,11 @@ Relevant resources
 - consider creating an apex-terraform-starter with same functionality for comparison
 
 ## Ask feedback for v1.0.0
-- https://forum.serverless.com/u/bill
 - https://forum.serverless.com/u/kalinchernev
 - https://gitter.im/alexdebrie
 - https://gitter.im/HyperBrain
 - https://og-aws.slack.com/archives/C2M3XL0QP/p1512663131000753
 - https://serverless.com/blog/announcing-first-cohort-serverless-champions-2017/
 - Sindre
-- Geoffrey
 - Serverless chronicle
 - Youri van der lans; Dojo Developers group
