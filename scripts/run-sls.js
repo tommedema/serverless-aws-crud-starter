@@ -28,6 +28,11 @@ async function main() {
 }
 
 async function runForService({ projectName, rootPath, stage, region, servicePath }) {
+  const cEnv = process.env;
+  if (!env.contains('AWS_ACCESS_KEY_ID') || !env.contains('AWS_SECRET_ACCESS_KEY')) {
+    cEnv['AWS_PROFILE'] = `${projectName}-${stage}`;
+  }
+  
   await execa(path.resolve(rootPath, 'node_modules/serverless/bin/serverless'), [
      command, '--aws-s3-accelerate', '--verbose',
      '--region', region,
@@ -35,9 +40,7 @@ async function runForService({ projectName, rootPath, stage, region, servicePath
   ].concat(args), {
     cwd: servicePath,
     stdout: process.stdout,
-    env: {
-      'AWS_PROFILE': `${projectName}-${stage}`
-    }
+    env: cEnv
   })
 }
 
