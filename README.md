@@ -130,7 +130,7 @@ Relevant resources
 
 ## Improvements: general > 1.0.0
 - way of orchestration can be improved with [declarative dependencies and orchestrated deployments and  rollbacks](https://forum.serverless.com/t/orchestrating-deployment-and-sharing-stack-outputs-in-a-declarative-manner-with-lerna-repos/3319)
-  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?)
+  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?) because this defines hard dependencies and prevents illegal deletes
   - https://github.com/serverless/serverless/pull/3575
 - figure out why service level `npm run deploy` without STAGE env var does not print exception
 - consider using official lerna repo structure
