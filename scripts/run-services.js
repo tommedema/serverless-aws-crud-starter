@@ -21,12 +21,18 @@ async function main() {
     await runForService(servicePath, stage)
   }
   
-  console.log(`ran ${command} for services:\n${services.map((p) => path.basename(p)).join('\n')}`)
+  console.log(`
+    ran ${command} for services:
+    ${services.map((p) => path.basename(p)).join('\n')}
+  `)
 }
 
 async function runForService(servicePath, stage) {
   if (command === 'deploy') {
-    await execa('npm', ['install'], { cwd: servicePath, stdout: process.stdout })
+    await execa('npm', ['install'], {
+      cwd: servicePath,
+      stdout: process.stdout
+    })
   }
   
   await execa('npm', ['run', command, '--'].concat(args), {
