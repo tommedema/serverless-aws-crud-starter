@@ -1,11 +1,11 @@
 {
-  "name": "campaigniac",
+  "name": "serverless-aws-crud-starter",
   "version": "0.0.1",
   "slsConfig": {
     "region": "eu-west-2",
     "domains": {
       "dev": {
-        "name": "campaigniac.com",
+        "name": "serverless-aws-crud-starter.com",
         "requestCertificate": true
       }
     }
