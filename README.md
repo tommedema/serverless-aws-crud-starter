@@ -81,15 +81,35 @@ To deploy or remove an individual service, simply navigate to that service's dir
 To remove a stage, run `STAGE=<my_feature> npm run remove` in the project directory.
 
 ## Required knowledge
-
 While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further and customize it to an actual project.
 
 * [AWS Lambda](https://aws.amazon.com/lambda/), [AWS Cloudformation](https://aws.amazon.com/cloudformation/), [AWS IAM](https://aws.amazon.com/iam/), [AWS Cognito](https://aws.amazon.com/cognito/)
 * Serverless Framework [[official doc](https://serverless.com/framework/docs/getting-started/), [practical guide](https://serverless-stack.com/)]
 * [Node.js](https://nodejs.org/en/) and [Javascript ES6](https://developer.mozilla.org/bm/docs/Web/JavaScript)
 
-## Future
+## Domain driven design
+Serverless.yml and cloudformation templates can quickly grow out of hand, reaching more than a thousand lines for even the simplest applications. Authentication alone requires the setup of a Cognito identity pool, a user pool, a user pool client, as well as at least 2 different user roles. These hundreds of lines of boilerplate code should not obfuscate your business logic. It follows that your serverless project should be designed around domains, such as auth, a CDN, an API, a hosted zone, etc.
 
+Unfortunately this brings you back to some of the traditional infrastructural complications that Serverless tries to prevent, most notably orchestration and between-service communication. Due to a lack of tooling to achieve this in serverless, a simple approach is followed here where services are prefixed by an integer indicating their order of deployment (e.g. 00, 01, NN). Services that depend on another service have to be deployed later than the service they depend on. For example, the `web` service creates a cloudfront distribution, while the `domains` service sets up a route53 hosted zone. The `domains` service then imports ID of the cloudfront distribution in order to associate it with the hosted zone:
+
+```yaml
+WebHostedZoneRecordSetGroup:
+  Type: AWS::Route53::RecordSetGroup
+  Condition: ShouldSetupDomain
+  Properties:
+    HostedZoneId:
+      Ref: WebHostedZone
+    RecordSets:
+    - Type: A
+      Name: ${{self:custom.slsConfig.domains.${{self:provider.stage}}.name, ''}}
+      AliasTarget:
+        DNSName: ${{cf:${{self:custom.projectName}}-web-${{self:provider.stage}}.WebCloudfrontDomainName}}
+        HostedZoneId: Z2FDTNDATAQYW2
+```
+
+Admittedly, while pragmatic, the approach followed here may be suboptimal (e.g. because it is hard to manually define which service should be deployed first). As the serverless world is still in its early stages, it is hoped that developments in this area can be expected. If you have ideas on how we can do this as part of this starter, please feel free to contribute.
+
+## Future
 Find the current roadmap [here](TODO.md).
 
 This is only the first phase of this starter. Based on my experience as CTO at a highly valued scale-up, it is the integration of infrastructure, platform, and tooling that enables a development team to achieve a stable and high velocity. The vision of this project is to allow for the near instant spawning of such projects, without having to put much thought into infrastructural or managerial decisions again. This includes a seamless continuous integration or even deployment process, the instant availability of a fully-featured development environment, as well as the use of proven agile software development methodologies such as scrum. As such, in a next phase of this starter, the following optional additions will be considered:
