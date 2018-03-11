@@ -1,5 +1,3 @@
-frameworkVersion: '=1.24.1'
-
 service: ${{file(../../package.json):name}}-api
 
 plugins:

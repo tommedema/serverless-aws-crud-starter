@@ -1,35 +1,21 @@
 {
-  "name": "serverless-aws-crud-starter",
+  "name": "campaigniac",
   "version": "0.0.1",
   "slsConfig": {
     "region": "eu-west-2",
     "domains": {
       "dev": {
-        "name": "tommedema.tk",
+        "name": "campaigniac.com",
         "requestCertificate": true
       }
     }
   },
-  "description": "starter kit enabling single-command spawning of serverless applications with all infrastructure being version controlled",
   "scripts": {
     "deploy": "node scripts/run-services deploy a-z",
     "remove": "node scripts/run-services remove z-a"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tommedema/serverless-aws-crud-starter.git"
-  },
-  "keywords": [
-    "serverless",
-    "aws",
-    "starter"
-  ],
   "author": "Tom Medema",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tommedema/serverless-aws-crud-starter/issues"
-  },
-  "homepage": "https://github.com/tommedema/serverless-aws-crud-starter#readme",
   "devDependencies": {
     "aws-sdk": "^2.207.0",
     "babel-core": "^6.26.0",
