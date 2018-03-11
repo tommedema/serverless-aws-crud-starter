@@ -109,6 +109,8 @@ WebHostedZoneRecordSetGroup:
 
 Admittedly, while pragmatic, the approach followed here may be suboptimal (e.g. because it is hard to manually define which service should be deployed first). As the serverless world is still in its early stages, it is hoped that developments in this area can be expected. If you have ideas on how we can do this as part of this starter, please feel free to contribute.
 
+Note that development dependencies are installed on the project level, such that these dependencies can be re-used across services. Other dependencies are installed on the service level.
+
 ## Future
 Find the current roadmap [here](TODO.md).
 
