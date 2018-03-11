@@ -51,8 +51,8 @@
     "read-pkg": "^3.0.0",
     "require-env": "^0.2.1",
     "serverless": "^1.26.1",
-    "serverless-webpack": "^4.4.0",
-    "webpack": "^3.11.0",
+    "serverless-webpack": "^5.0.0",
+    "webpack": "^4.1.1",
     "webpack-node-externals": "^1.6.0"
   },
   "engines": {

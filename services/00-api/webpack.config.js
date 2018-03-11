@@ -11,7 +11,7 @@ module.exports = {
   entry: slsw.lib.entries,
   target: 'node',
   devtool: 'source-map',
-  stats: 'errors-only',
+  stats: 'minimal',
   output: {
     libraryTarget: "commonjs2",
     path: path.join(__dirname, ".webpack"),
