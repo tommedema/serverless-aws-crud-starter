@@ -16,6 +16,8 @@ All of this is done while adhering to the following core principles of this libr
 * highly maintainable (function and component level modularity)
 * test driven development
 
+An example frontend app is included such that you can quickly get started. Credits for the app itself go to the guys at the excellent [Serverless Stack guide](https://serverless-stack.com/).
+
 ## Getting started
 
 ### Prerequisites
@@ -82,9 +84,9 @@ To remove a stage, run `STAGE=<my_feature> npm run remove` in the project direct
 
 While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further and customize it to an actual project.
 
-* AWS Lambda, AWS Cloudformation, AWS IAM, AWS Cognito
-* Serverless Framework
-* Node.js and Javascript ES6
+* [AWS Lambda](https://aws.amazon.com/lambda/), [AWS Cloudformation](https://aws.amazon.com/cloudformation/), [AWS IAM](https://aws.amazon.com/iam/), [AWS Cognito](https://aws.amazon.com/cognito/)
+* Serverless Framework [[official doc](https://serverless.com/framework/docs/getting-started/), [practical guide](https://serverless-stack.com/)]
+* [Node.js](https://nodejs.org/en/) and [Javascript ES6](https://developer.mozilla.org/bm/docs/Web/JavaScript)
 
 This is only the first phase of this starter. Based on my experience as a CTO at a highly valued scale-up, it is the integration of infrastructure, platform, and tooling that enables a development team to achieve a stable and high velocity. The vision of this project is to allow for the instant spawning of such projects, without having to put much thought into infrastructural or managerial decisions again. This includes a seamless continuous integration or even deployment process, the instant availability of a fully-featured development environment, as well as the use of proven software development methodologies such as scrum or scrumban. As such, in a next phase of this starter, the following optional additions will be considered:
 
