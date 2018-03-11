@@ -145,6 +145,7 @@ Relevant resources
   - watch https://www.youtube.com/watch?v=_mB1JVlhScs
   - read the AWS well-architected serverless lens [whitepaper](https://d1.awsstatic.com/whitepapers/architecture/AWS-Serverless-Applications-Lens.pdf)
 - CI/CD as code
+  - https://docs.aws.amazon.com/solutions/latest/aws-cloudformation-validation-pipeline
   - https://github.com/serverless/blog/blob/master/posts/2017-02-22-cicd-for-serverless-part-2.md
   - (Gitlab or [AWS Codepipeline](https://cloudonaut.io/aws-velocity-serverless-app/))
   - https://forums.aws.amazon.com/ann.jspa?annID=5240
