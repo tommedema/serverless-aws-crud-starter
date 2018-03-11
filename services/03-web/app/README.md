@@ -1,5 +1,18 @@
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
+When debugging locally, you may want to define a `.env` file with environment variables that are normally injected during compile time while deploying to AWS. An example of such file would be:
+
+```
+REACT_APP_AWS_REGION=eu-west-2
+REACT_APP_API_ROOT=https://XXX.execute-api.eu-west-2.amazonaws.com/dev
+REACT_APP_ATTACHMENTS_BUCKET=XXX
+REACT_APP_COGNITO_USER_POOL_ID=XXX
+REACT_APP_COGNITO_USER_POOL_CLIENT_ID=XXX
+REACT_APP_COGNITO_IDENTITY_POOL_ID=XXX
+```
+
+For details, see the `deploy-react-app` plugin in `services/0x-web/.serverless_plugins`.
+
 Below you will find some information on how to perform common tasks.<br>
 You can find the most recent version of this guide [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
