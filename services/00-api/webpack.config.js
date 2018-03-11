@@ -10,6 +10,7 @@ const path = require('path')
 module.exports = {
   entry: slsw.lib.entries,
   target: 'node',
+  mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
   devtool: 'source-map',
   stats: 'minimal',
   output: {
