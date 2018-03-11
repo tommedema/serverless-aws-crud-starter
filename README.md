@@ -94,8 +94,10 @@ While this starter helps you get on your way quickly, you'll have to be comforta
 - changing stage
 - how a AWS profile can be created for each ${PROJECT}-${STAGE} combination
   - why to use account based separation with a link to recommendation of amazon itself
+- dev dependencies are in project level's package.json
 
 ## To do: general < 1.0.0
+- consider creating separate db service (and take it out from api service)
 - create [sls deploy PR](https://github.com/serverless/serverless/issues/4545)
 - fork s3-remover to support `Ref:` and use it for `npm run remove`
 - use standard.js code style with linter for both backend and frontend

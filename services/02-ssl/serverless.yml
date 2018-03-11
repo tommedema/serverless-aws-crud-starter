@@ -36,8 +36,12 @@ custom:
   projectName: ${{file(../../package.json):name}}
   slsConfig: ${{file(../../package.json):slsConfig}}
   
-  # allows for node modules to be separately included into artifact zip
-  webpackIncludeModules: true
+  # serverless-webpack config
+  webpack:
+    webpackConfig: 'webpack.config.js' # location of webpack configuration file
+    # include external modules into serverless artifact, bypassing webpack
+    # do not exclude aws-sdk because AWS lambda preinstalled version is out of date
+    includeModules: true
   
 functions:
   
