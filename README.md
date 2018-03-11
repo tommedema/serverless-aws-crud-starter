@@ -26,9 +26,16 @@ Since these last features are more distant from code, they can be opted out from
 
 ### Prerequisites
 
-1. node, aws cli
-2. create aws account with api user with administrator rights
+1. Node.js
+2. AWS cli
+3. AWS account with an API user with administrator rights
+
+### Installation
+1. `$ git clone repo`
+2. edit `package.json` with your project's name, AWS region, and optionally define your domain names (per stage)
 3. define aws profile based on project name and stage
+4. `npm install`
+5. `$ STAGE=dev npm run deploy`
 
 ### AWS profile configuration
 For security reasons, each project and stage combination is recommended to run on its own sandboxed AWS account. If you are running multiple non-production environments, it's acceptable to deploy these to the same account, but you still need to create an AWS profile for each. A AWS profile is named after the project's name postfixed by a hyphen (`-`) and the name of your stage. You should add these profiles to your `~/.aws/credentials` file. For example:
@@ -42,10 +49,6 @@ aws_secret_access_key = YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 aws_access_key_id = XXXXXXXXXXXXXXXXXXXX
 aws_secret_access_key = YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 ```
-
-### Installation
-1. `$ git clone repo`
-2. `$ STAGE=dev npm run deploy`
 
 ### Previewing branches
 You can easily preview a new branch by deploying it under a different stage. E.g.:
@@ -71,28 +74,30 @@ _package.json_
 }
 ```
 
-Once deployed, you will be informed to set your domain's nameservers. If you have `requestCertificate` set to true, a certificate will be requested and validated automatically as soon as your nameservers are set up. Once validated, the next deploy will cause the certificate to be activated and for all traffic to start using the `https` protocol. Certificates are automatically renewed.
+Once deployed, you will be informed to set your domain's nameservers. If you have `requestCertificate` set to true, a certificate will be requested and validated automatically as soon as your nameservers are set up. Once validated, the next deploy will cause the certificate to be activated and for all traffic to start using the `https` protocol. Certificates are automatically renewed. In summary, you may have to deploy twice to get a fully functioning SSL-enabled domain:
+1. The first deploy creates your hosted zones and informs you about the nameservers you should set your domain to. It will also request a certificate and prepare DNS based domain validation entries for your hosted zone.
+2. Subsequent deploys will check if your domain is now propagating correctly to your hosted zone. If so, it will be verified automatically by AWS Certificate Manager through DNS (this may take up to 2 hours). Once you deploy while the certificate is verified, it will start to be used by the cloudfront distributions and all HTTP traffic will be redirected to HTTPS.
 
 ### Cleanup
 To remove a stage, run `STAGE=<my_feature> npm run remove` in the project directory.
 
 ## Required knowledge
 
-While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further.
+While this starter helps you get on your way quickly, you'll have to be comfortable with the following technologies to be able to develop it further and customize it to an actual project.
 
-* AWS Lambda, Cloudformation, IAM
-* Serverless framework
-* Node.js and Javascript
+* AWS Lambda, AWS Cloudformation, AWS IAM, AWS Cognito
+* Serverless Framework
+* Node.js and Javascript ES6
 
 ## To document < 1.0.0
 - sub-service packages and commands
 - changing stage
 - how a AWS profile can be created for each ${PROJECT}-${STAGE} combination
   - why to use account based separation with a link to recommendation of amazon itself
-- enabling a custom domain for a stage (e.g. production)
-- requesting a certificate for a custom domain
+- dev dependencies are in project level's package.json
 
 ## To do: general < 1.0.0
+- consider creating separate db service (and take it out from api service)
 - create [sls deploy PR](https://github.com/serverless/serverless/issues/4545)
 - fork s3-remover to support `Ref:` and use it for `npm run remove`
 - use standard.js code style with linter for both backend and frontend
@@ -125,7 +130,7 @@ Relevant resources
 
 ## Improvements: general > 1.0.0
 - way of orchestration can be improved with [declarative dependencies and orchestrated deployments and  rollbacks](https://forum.serverless.com/t/orchestrating-deployment-and-sharing-stack-outputs-in-a-declarative-manner-with-lerna-repos/3319)
-  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?)
+  - use `Fn::ImportValue:` instead of `cf:` (also in plugins?) because this defines hard dependencies and prevents illegal deletes
   - https://github.com/serverless/serverless/pull/3575
 - figure out why service level `npm run deploy` without STAGE env var does not print exception
 - consider using official lerna repo structure
@@ -142,6 +147,7 @@ Relevant resources
   - watch https://www.youtube.com/watch?v=_mB1JVlhScs
   - read the AWS well-architected serverless lens [whitepaper](https://d1.awsstatic.com/whitepapers/architecture/AWS-Serverless-Applications-Lens.pdf)
 - CI/CD as code
+  - https://docs.aws.amazon.com/solutions/latest/aws-cloudformation-validation-pipeline
   - https://github.com/serverless/blog/blob/master/posts/2017-02-22-cicd-for-serverless-part-2.md
   - (Gitlab or [AWS Codepipeline](https://cloudonaut.io/aws-velocity-serverless-app/))
   - https://forums.aws.amazon.com/ann.jspa?annID=5240

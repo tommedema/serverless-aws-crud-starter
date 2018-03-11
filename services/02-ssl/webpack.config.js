@@ -10,8 +10,9 @@ const path = require('path')
 module.exports = {
   entry: slsw.lib.entries,
   target: 'node',
+  mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
   devtool: 'source-map',
-  stats: 'errors-only',
+  stats: 'minimal',
   output: {
     libraryTarget: "commonjs2",
     path: path.join(__dirname, ".webpack"),
@@ -19,8 +20,8 @@ module.exports = {
     sourceMapFilename: "[file].map"
   },
   externals: [
-    nodeExternals({ modulesDir: './node_modules' }),
-    nodeExternals({ modulesDir: '../../node_modules' })
+    nodeExternals({ modulesDir: path.resolve(__dirname, './node_modules') }),
+    nodeExternals({ modulesDir: path.resolve(__dirname, '../../node_modules') })
   ],
   module: {
     rules: [

@@ -6,15 +6,15 @@ const stage = env.require('STAGE')
 const command = process.argv[2]
 const direction = process.argv[3]
 const args = process.argv.slice(4)
+const servicesPath = path.resolve(__dirname, '../services');
 
 async function main() {
-  let services = Array.from(await listDirectories(path.resolve(__dirname, '../services'))).sort()
+  let services = Array
+    .from(await listDirectories(servicesPath))
+    .sort()
+    
   if (direction === 'z-a') {
     services = services.reverse()
-  }
-  
-  if (command === 'deploy') {
-    await execa('npm', ['install'], { cwd: path.resolve(__dirname, '..'), stdout: process.stdout })
   }
   
   for (let servicePath of services) {

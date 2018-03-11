@@ -9,6 +9,7 @@ custom:
   projectName: ${{file(../../package.json):name}}
   slsConfig: ${{file(../../package.json):slsConfig}}
   
+  # serverless-webpack config
   webpack:
     webpackConfig: 'webpack.config.js' # location of webpack configuration file
     includeModules: # include external modules into serverless artifact, bypassing webpack

@@ -31,7 +31,9 @@ async function runForService({ projectName, rootPath, stage, region, servicePath
   }
   
   await execa(path.resolve(rootPath, 'node_modules/serverless/bin/serverless'), [
-     command, '--aws-s3-accelerate', '--verbose',
+     command,
+     '--aws-s3-accelerate',
+     '--verbose',
      '--region', region,
      '--stage', stage
   ].concat(args), {
