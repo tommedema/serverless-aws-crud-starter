@@ -1,3 +1,6 @@
+# OSX specific
+.DS_Store
+
 # Files to exclude from version control
 # See also https://github.com/github/gitignore
 
